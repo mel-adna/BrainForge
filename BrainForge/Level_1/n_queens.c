@@ -1,50 +1,39 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-void	solve(int *b, int n, int r)
+void	solve(int *board, int n, int row)
 {
-	if (r == n)
-	{
+	if (row == n)
 		for (int i = 0; i < n; i++)
-		{
-			fprintf(stdout, "%d", b[i]);
-			if (i < n - 1)
-				fprintf(stdout, " ");
-			else
-				fprintf(stdout, "\n");
-		}
-	}
-	for (int c = 0; c < n; c++)
+			printf("%d%c", board[i], i < n - 1 ? ' ': '\n');
+	for (int column = 0; column < n; column++)
 	{
 		int ok = 1;
-		for (int i = 0; i < r; i++)
-		{
-			if (b[i] == c || b[i] - i == c - r || b[i] + i == c + r)
+		for (int i = 0; i < row; i++)
+			if (board[i] == column || board[i] - i == column - row || board[i] + i == column + row)
 				ok = 0;
-		}
-		if (ok)
+		if (ok == 1)
 		{
-			b[r] = c;
-			solve(b, n, r + 1);
+			board[row] = column;
+			solve(board, n, row + 1);
 		}
 	}
 }
 
-int	main(int ac, char **av)
+int main(int ac, char **av)
 {
 	int n;
-	int *b;
-
+	int *board;
+	
 	if (ac == 2)
 	{
 		n = atoi(av[1]);
 		if (n <= 0)
 			return (0);
-		b = malloc(sizeof(int) * n);
-		if (!b)
+		board = malloc(sizeof(int) * n);
+		if (!board)
 			return (1);
-		solve(b, n, 0);
-		free(b);
+		solve(board, n, 0);
 	}
 	return (0);
 }
